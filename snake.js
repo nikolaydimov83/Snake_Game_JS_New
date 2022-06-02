@@ -66,30 +66,17 @@ function snakeEats(foodArr,snake, direction){
    //First I assign the head of the snake of the present to the future snake
     let futureSnake=[snake[0]]; 
     direction=direction1
-    //console.log(foodArr)
-    //console.log(futureSnake)
+
     //Here I imaginery "move" the future snake to the next setInterval  
     snakeMove(direction,futureSnake);
 
     //now I will check if the coordinates of the future snake equal food coordinates.
     //If so, I will assign the Future snake head as a head to the real snake
     for (let i in foodArr){            
-                /*console.log(`Present Snake: ${snake}`)
-                console.log(`Future Snake: ${futureSnake}`)
-                console.log(`Food:${foodArr}`)*/
+                
             if (foodArr[i].x===futureSnake[0].x&&foodArr[i].y===futureSnake[0].y){
                 foodArr.splice(i,1);
-                
-                /*for (let i in snake){
-                    console.log(`Start snake elements`)
-                    console.log(`${snake[i].x}-->${snake[i].y}`)
-                    console.log(`End snake elements`)
-                }
-                console.log(`EATED!!!!!!!!!!!!!`)
-                console.log(`EATED!!!!!!!!!!!!!`)
-                console.log(`EATED!!!!!!!!!!!!!`)
-                console.log(`EATED!!!!!!!!!!!!!`)
-                console.log(`EATED!!!!!!!!!!!!!`)*/
+
                 let newHead=new snakeBrick(futureSnake[0].x,futureSnake[0].y)
                 //console.log(`New Head: ${newHead}`);
                 snake.unshift(newHead);
