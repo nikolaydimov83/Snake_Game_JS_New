@@ -59,59 +59,43 @@ function drawFood(foodArray){
 }
 
 function snakeEats(foodArr,snake, direction){
-    /*In order to check whether snake's head is touching the food based on Head co-ordinates and direction 
-    I create imaginative "future" snake that is wold be on the next setInterval itteration and check whether 
-    it's coordinates are equal to food coordinates 
-     */
-   //First I assign the head of the snake of the present to the future snake
     let futureSnake=[snake[0]]; 
-    direction=direction1
-
-    //Here I imaginery "move" the future snake to the next setInterval  
     snakeMove(direction,futureSnake);
-
-    //now I will check if the coordinates of the future snake equal food coordinates.
-    //If so, I will assign the Future snake head as a head to the real snake
     for (let i in foodArr){            
                 
-            if (foodArr[i].x===futureSnake[0].x&&foodArr[i].y===futureSnake[0].y){
+            if (foodArr[i].x===snake[0].x&&foodArr[i].y===snake[0].y){                
                 foodArr.splice(i,1);
-                snakeEaten=true;
-                let newHead=new snakeBrick(futureSnake[0].x,futureSnake[0].y)
-                console.log(`JUST BEFORE EATING!!!!`)
-                console.log(`Start snake elements`)                       
-                        for (let k in snake){                                  
-                            console.log(`${snake[k].x}-->${snake[k].y}`)                   
-                        }
-                console.log(`End snake elements`)
-                console.log(`FOOD COORDINATES`)
-                                                 
-                    console.log(`${foodArr[i].x}-->${foodArr[i].y}`)                   
-                
-                //console.log(`New Head: ${newHead}`);
-                snake.unshift(newHead);
-               
+                let newSnakeHead=new snakeBrick(futureSnake[0].x,futureSnake[0].y)
+                snake.unshift(newSnakeHead);                          
                 addFoodToGrid(foodArr,snake);
-                drawFood(foodArr);
-              
+                drawFood(foodArr);             
                 drawSnake(snake)
-
             }
 
         }
 }
+function snakeDies(snake,width,height){
+    if(snake[0].x===width-40||snake[0].x===-10
+    ||snake[0].y===height-40||snake[0].y===-10){
+        
+        return true
+    }
+    for (i=1; i<snake.length;i++){
+        if (snake[0].x===snake[i].x&&snake[0].y===snake[i].y){
+          
+            return true
+        }
+    }
+}
 function drawSnake(snake){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i in snake){
-        
-        ctx.lineWidth = 1;
-        
+    for (let i in snake){       
+        ctx.lineWidth = 1;       
         drawTheGrid(ctx.canvas.width,ctx.canvas.height);
         ctx.strokeRect(snake[i].x,snake[i].y,10,10)
     }
-
 }
-
+let speed=250;
 let direction1;
 let listenForDirections=this.addEventListener('keypress', event => {
     
@@ -143,10 +127,17 @@ let listenForDirections=this.addEventListener('keypress', event => {
             direction1='right'
         break
         case 'e':
-            speed=900;
+            addFoodToGrid(foodArray,snake);
+        break
+        case '+':
+            speed+=1200
+        break
+        case '-':
+            speed-=100
         break
         default:
-            console.log(`Typing SNAKE coordinates:`)
+            console.log(`MANUAL!!!!!!!!!
+Typing SNAKE coordinates:`)
             for (let i in snake){
                 console.log(`${snake[i].x}-->${snake[i].y}`)
             } 
@@ -154,37 +145,46 @@ let listenForDirections=this.addEventListener('keypress', event => {
             for (let i in foodArray){
                 console.log(`${foodArray[i].x}-->${foodArray[i].y}`)
             }
+            console.log(speed);
         break
      }
     
   })
-let speed=250;
+
 let canvas=document.getElementById("snakePlace")
 let ctx=canvas.getContext("2d");
 ctx.canvas.width=350;
 ctx.canvas.height=350;
 ctx.lineWidth = 1;
 drawTheGrid(ctx.canvas.width,ctx.canvas.height);
-//draw the snake
 let snake=[new snakeBrick(150,0)];
 direction1='down';
 foodArray=[];
 let snakeEaten=false;
- //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 90 times food will be drawn 
-let turnsInSetInterval=60
-setInterval(function () {
+ //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 75 times food will be drawn 
+let turnsInSetInterval=75
+let snakeDead=false;
+let mainGame=setInterval(function () {
+ 
     snakeMove(direction1,snake)
     drawSnake(snake)
     drawFood(foodArray);
     
-    if (turnsInSetInterval%60===0){
+    if (turnsInSetInterval%75===0){
         addFoodToGrid(foodArray,snake);
     }
+    snakeDead=snakeDies(snake,ctx.canvas.width,ctx.canvas.height)
+    console.log(snakeDead);
     snakeEats(foodArray,snake,direction1);
-    turnsInSetInterval++
+
+    if (snakeDead){
+        alert(`Game Over`)
+        clearInterval(mainGame)
+    }
+
     
-    
-    
+    turnsInSetInterval++   
 }, speed);
+
 
 
