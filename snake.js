@@ -76,14 +76,14 @@ function snakeEats(foodArr,snake, direction){
                 
             if (foodArr[i].x===futureSnake[0].x&&foodArr[i].y===futureSnake[0].y){
                 foodArr.splice(i,1);
-
+                snakeEaten=true;
                 let newHead=new snakeBrick(futureSnake[0].x,futureSnake[0].y)
                 //console.log(`New Head: ${newHead}`);
                 snake.unshift(newHead);
                
                 addFoodToGrid(foodArr,snake);
                 drawFood(foodArr);
-                alert(`Length:${snake.length}`)
+              
                 drawSnake(snake)
 
             }
@@ -108,15 +108,28 @@ let listenForDirections=this.addEventListener('keypress', event => {
      let arrowpressed=event.key;
      switch(arrowpressed){
          case 'w':
-             direction1='up'
+           if (direction1==='down'){
+                snake.reverse();
+            }
+            direction1='up'
+             
          break
          case 's':
+            if (direction1==='up'){
+                snake.reverse();
+            }
             direction1='down'
         break
         case 'a':
+            if (direction1==='right'){
+                snake.reverse();
+            } 
             direction1='left'
         break
         case 'd':
+           if (direction1==='right'){
+            snake.reverse();
+            }
             direction1='right'
         break
         default:
@@ -137,13 +150,13 @@ direction1='down';
 foodArray=[];
 let snakeEaten=false;
  //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 90 times food will be drawn 
-let turnsInSetInterval=90
+let turnsInSetInterval=60
 setInterval(function () {
     snakeMove(direction1,snake)
     drawSnake(snake)
     drawFood(foodArray);
     
-    if (turnsInSetInterval%90===0){
+    if (turnsInSetInterval%60===0){
         addFoodToGrid(foodArray,snake);
     }
     snakeEats(foodArray,snake,direction1);
@@ -158,6 +171,6 @@ setInterval(function () {
                 console.log(`End snake elements`)
     }
     
-}, 400);
+}, 250);
 
 
