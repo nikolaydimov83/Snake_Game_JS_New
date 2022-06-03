@@ -78,6 +78,16 @@ function snakeEats(foodArr,snake, direction){
                 foodArr.splice(i,1);
                 snakeEaten=true;
                 let newHead=new snakeBrick(futureSnake[0].x,futureSnake[0].y)
+                console.log(`JUST BEFORE EATING!!!!`)
+                console.log(`Start snake elements`)                       
+                        for (let k in snake){                                  
+                            console.log(`${snake[k].x}-->${snake[k].y}`)                   
+                        }
+                console.log(`End snake elements`)
+                console.log(`FOOD COORDINATES`)
+                                                 
+                    console.log(`${foodArr[i].x}-->${foodArr[i].y}`)                   
+                
                 //console.log(`New Head: ${newHead}`);
                 snake.unshift(newHead);
                
@@ -132,12 +142,23 @@ let listenForDirections=this.addEventListener('keypress', event => {
             }
             direction1='right'
         break
+        case 'e':
+            speed=900;
+        break
         default:
-            break
+            console.log(`Typing SNAKE coordinates:`)
+            for (let i in snake){
+                console.log(`${snake[i].x}-->${snake[i].y}`)
+            } 
+            console.log(`Typing FOOD coordinates:`)
+            for (let i in foodArray){
+                console.log(`${foodArray[i].x}-->${foodArray[i].y}`)
+            }
+        break
      }
     
   })
-
+let speed=250;
 let canvas=document.getElementById("snakePlace")
 let ctx=canvas.getContext("2d");
 ctx.canvas.width=350;
@@ -161,16 +182,9 @@ setInterval(function () {
     }
     snakeEats(foodArray,snake,direction1);
     turnsInSetInterval++
-    if (snakeEaten===`true`){
-        console.log(`MAIN CONTEXT!!!!`)
-        console.log(`Start snake elements`)
-                
-                for (let i in snake){                                  
-                    console.log(`${snake[i].x}-->${snake[i].y}`)                   
-                }
-                console.log(`End snake elements`)
-    }
     
-}, 250);
+    
+    
+}, speed);
 
 
