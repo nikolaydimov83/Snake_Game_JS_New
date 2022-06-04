@@ -95,8 +95,7 @@ function drawSnake(snake){
         ctx.strokeRect(snake[i].x,snake[i].y,10,10)
     }
 }
-let speed=250;
-let direction1;
+
 let listenForDirections=this.addEventListener('keypress', event => {
     
      let arrowpressed=event.key;
@@ -151,20 +150,34 @@ Typing SNAKE coordinates:`)
     
   })
 
+let listenForGameStart=document.getElementById(`start`).addEventListener('click', event => {
+mainGame();
+console.log('Started the game')
+
+  })
+
+let speed=250;
+let direction1;  
 let canvas=document.getElementById("snakePlace")
 let ctx=canvas.getContext("2d");
 ctx.canvas.width=350;
 ctx.canvas.height=350;
 ctx.lineWidth = 1;
+let snake=[];
+let direction='';
+let foodArray=[];
+
+function mainGame(){
+
 drawTheGrid(ctx.canvas.width,ctx.canvas.height);
 let snake=[new snakeBrick(150,0)];
 direction1='down';
-foodArray=[];
+
 let snakeEaten=false;
  //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 75 times food will be drawn 
 let turnsInSetInterval=75
 let snakeDead=false;
-let mainGame=setInterval(function () {
+let loopLogic=setInterval(function () {
  
     snakeMove(direction1,snake)
     drawSnake(snake)
@@ -179,12 +192,10 @@ let mainGame=setInterval(function () {
 
     if (snakeDead){
         alert(`Game Over`)
-        clearInterval(mainGame)
+        clearInterval(loopLogic)
     }
 
     
     turnsInSetInterval++   
 }, speed);
-
-
-
+}
