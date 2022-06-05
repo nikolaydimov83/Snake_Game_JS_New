@@ -128,6 +128,12 @@ let listenForDirections=this.addEventListener('keypress', event => {
         case 'e':
             addFoodToGrid(foodArray,snake);
         break
+        case 'p':
+            if(gamePaused){
+                mainGame();
+            }
+            gamePaused=!gamePaused
+        break
         case '+':
             speed+=1200
         break
@@ -151,11 +157,34 @@ Typing SNAKE coordinates:`)
   })
 
 let listenForGameStart=document.getElementById(`start`).addEventListener('click', event => {
-mainGame();
-console.log('Started the game')
+
+    setInitialGameStatus.call()
+    mainGame();
+    console.log('Started the game')
 
   })
 
+let setInitialGameStatus=function(){
+
+direction1='down';
+  
+canvas=document.getElementById("snakePlace")
+ctx=canvas.getContext("2d");
+ctx.canvas.width=350;
+ctx.canvas.height=350;
+ctx.lineWidth = 1;
+//let snake=[];
+
+foodArray=[new snakeBrick(150,150)];
+gamePaused=false;
+drawTheGrid(ctx.canvas.width,ctx.canvas.height);
+snake=[new snakeBrick(150,0)];
+
+
+ //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 75 times food will be drawn 
+turnsInSetInterval=76
+snakeDead=false;    
+}
 let speed=250;
 let direction1;  
 let canvas=document.getElementById("snakePlace")
@@ -163,21 +192,18 @@ let ctx=canvas.getContext("2d");
 ctx.canvas.width=350;
 ctx.canvas.height=350;
 ctx.lineWidth = 1;
-let snake=[];
+//let snake=[];
 let direction='';
 let foodArray=[];
-
-function mainGame(){
-
+let gamePaused=false;
 drawTheGrid(ctx.canvas.width,ctx.canvas.height);
 let snake=[new snakeBrick(150,0)];
 direction1='down';
 
-let snakeEaten=false;
  //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 75 times food will be drawn 
 let turnsInSetInterval=75
-let snakeDead=false;
-let loopLogic=setInterval(function () {
+let snakeDead=false; 
+function loopLogic(){setInterval(function () {
  
     snakeMove(direction1,snake)
     drawSnake(snake)
@@ -194,8 +220,16 @@ let loopLogic=setInterval(function () {
         alert(`Game Over`)
         clearInterval(loopLogic)
     }
+    if (gamePaused){
+        clearInterval(loopLogic);
+    }
 
     
     turnsInSetInterval++   
 }, speed);
+}
+function mainGame(){
+
+let start=loopLogic()
+clearInterval(start);
 }

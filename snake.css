@@ -1,4 +1,18 @@
 canvas{
     width: 300;
     height: 300;
+   
+}
+h1{
+    width: fit-content;
+}
+input{
+    width: 300px;
+    color: blueviolet;
+}
+div.snake{
+    width: fit-content;
+    
+    
+    
 }
