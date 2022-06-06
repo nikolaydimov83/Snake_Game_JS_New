@@ -129,10 +129,13 @@ let listenForDirections=this.addEventListener('keypress', event => {
             addFoodToGrid(foodArray,snake);
         break
         case 'p':
-            if(gamePaused){
-                mainGame();
+         gamePaused=!gamePaused    
+        if (gamePaused){
+                clearInterval(gameLoop);
+            }else{
+                mainGame()
             }
-            gamePaused=!gamePaused
+           
         break
         case '+':
             speed+=1200
@@ -157,8 +160,8 @@ Typing SNAKE coordinates:`)
   })
 
 let listenForGameStart=document.getElementById(`start`).addEventListener('click', event => {
-
-    setInitialGameStatus.call()
+    clearInterval(gameLoop);
+    setInitialGameStatus.call();
     mainGame();
     console.log('Started the game')
 
@@ -186,7 +189,8 @@ turnsInSetInterval=76
 snakeDead=false;    
 }
 let speed=250;
-let direction1;  
+let direction1; 
+let gameLoop; 
 let canvas=document.getElementById("snakePlace")
 let ctx=canvas.getContext("2d");
 ctx.canvas.width=350;
@@ -203,33 +207,30 @@ direction1='down';
  //turnsInSetInterval  counts how many times the setInterval Function has been iterated. Every 75 times food will be drawn 
 let turnsInSetInterval=75
 let snakeDead=false; 
-function loopLogic(){setInterval(function () {
- 
-    snakeMove(direction1,snake)
-    drawSnake(snake)
-    drawFood(foodArray);
-    
-    if (turnsInSetInterval%75===0){
-        addFoodToGrid(foodArray,snake);
-    }
-    snakeDead=snakeDies(snake,ctx.canvas.width,ctx.canvas.height)
-    console.log(snakeDead);
-    snakeEats(foodArray,snake,direction1);
 
-    if (snakeDead){
-        alert(`Game Over`)
-        clearInterval(loopLogic)
-    }
-    if (gamePaused){
-        clearInterval(loopLogic);
-    }
-
-    
-    turnsInSetInterval++   
-}, speed);
-}
 function mainGame(){
 
-let start=loopLogic()
-clearInterval(start);
+    gameLoop=setInterval(function () {
+ 
+        snakeMove(direction1,snake)
+        drawSnake(snake)
+        drawFood(foodArray);
+        
+        if (turnsInSetInterval%75===0){
+            addFoodToGrid(foodArray,snake);
+        }
+        snakeDead=snakeDies(snake,ctx.canvas.width,ctx.canvas.height)
+        console.log(snakeDead);
+        snakeEats(foodArray,snake,direction1);
+    
+        if (snakeDead){
+            alert(`Game Over`)
+            clearInterval(gameLoop)
+        }
+    
+    
+        
+        turnsInSetInterval++   
+    }, speed);
+
 }
