@@ -27,7 +27,7 @@ function snakeMove(direction,snake){
         break
     }
     snake.unshift(newSnakeHead)
-    //console.log(`${newSnakeHead.x},${newSnakeHead.y}--->${snake[snake.length-1].x},${snake[snake.length-1].y}`)
+    
     snake.pop();
     
 }
@@ -39,7 +39,6 @@ function addFoodToGrid(foodArray,snakeArray){
         let foodX=Math.floor(Math.random()*(ctx.canvas.width-50)/10)*10
         let foodY=Math.floor(Math.random()*(ctx.canvas.height-50)/10)*10
         food=new snakeBrick(foodX,foodY)
-        //console.log(`${foodX}-->${foodY}`)
         for (let i in snakeArray){
             if((food.x===snakeArray.x)&&(food.y===snakeArray.y)){
                 foodIsPartOfSnake=true
@@ -120,7 +119,7 @@ let listenForDirections=this.addEventListener('keypress', event => {
             direction1='left'
         break
         case 'd':
-           if (direction1==='right'){
+           if (direction1==='left'){
             snake.reverse();
             }
             direction1='right'
@@ -138,10 +137,17 @@ let listenForDirections=this.addEventListener('keypress', event => {
            
         break
         case '+':
-            speed+=1200
+            speed+=50
+            console.log(speed)
+            clearInterval(gameLoop);
+            mainGame();
         break
         case '-':
-            speed-=100
+            speed-=50
+            
+            console.log(speed)
+            clearInterval(gameLoop);
+            mainGame();
         break
         default:
             console.log(`MANUAL!!!!!!!!!
@@ -220,7 +226,7 @@ function mainGame(){
             addFoodToGrid(foodArray,snake);
         }
         snakeDead=snakeDies(snake,ctx.canvas.width,ctx.canvas.height)
-        console.log(snakeDead);
+        
         snakeEats(foodArray,snake,direction1);
     
         if (snakeDead){
