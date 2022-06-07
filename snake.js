@@ -69,6 +69,8 @@ function snakeEats(foodArr,snake, direction){
                 addFoodToGrid(foodArr,snake);
                 drawFood(foodArr);             
                 drawSnake(snake)
+                score+=1;
+                document.getElementById("score").innerText='Score: '+score;
             }
 
         }
@@ -195,6 +197,8 @@ turnsInSetInterval=76
 snakeDead=false;    
 }
 let speed=250;
+let score=0;
+document.getElementById("score").innerText='Score: '+score;
 let direction1; 
 let gameLoop; 
 let canvas=document.getElementById("snakePlace")
